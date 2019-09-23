@@ -1,0 +1,11 @@
+{
+  "name": "demux",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "demux": "^5.0.2-566",
+    "demux-eos": "^5.0.4-416",
+    "demux-postgres": "^5.0.2-303"
+  }
+}
