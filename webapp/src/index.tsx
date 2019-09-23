@@ -7,6 +7,7 @@ import { Api, JsonRpc, RpcError } from 'eosjs';
 import { JsSignatureProvider } from 'eosjs/dist/eosjs-jssig';
 
 const rpc = new JsonRpc(''); // nodeos and web server are on same port
+const URL = 'https://3000-f033f8bb-8651-406f-b4f1-cb40f27652e6.ws-us1.gitpod.io/posts'
 
 interface PostData {
     id?: number;
@@ -131,18 +132,24 @@ class Messages extends React.Component<{}, { content: string }> {
     componentDidMount() {
         this.interval = window.setInterval(async () => {
             try {
+                /*
                 const rows = await rpc.get_table_rows({
                     json: true, code: 'talk', scope: '', table: 'message', limit: 1000,
                 });
+                */
+                const res = await fetch(URL)
+                const rows = await res.json()
                 let content =
                     'id          reply_to      user          content\n' +
                     '=============================================================\n';
-                for (let row of rows.rows)
+                for (let row of rows) {
                     content +=
                         (row.id + '').padEnd(12) +
                         (row.reply_to + '').padEnd(12) + '  ' +
-                        row.user.padEnd(14) +
+                        row.user_name.padEnd(14) +
                         row.content + '\n';
+                }
+
                 this.setState({ content });
             } catch (e) {
                 if (e.json)
