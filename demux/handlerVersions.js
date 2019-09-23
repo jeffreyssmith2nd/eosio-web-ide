@@ -16,7 +16,6 @@ const handlerVersions = [{
         }
 
         massive(dbConfig).then((db) => {
-            console.log(db)
             db.talk.post.insert({
                 id: payload.data.id,
                 reply_to: payload.data.reply_to,

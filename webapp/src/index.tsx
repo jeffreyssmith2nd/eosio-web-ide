@@ -9,6 +9,10 @@ import { JsSignatureProvider } from 'eosjs/dist/eosjs-jssig';
 const rpc = new JsonRpc(''); // nodeos and web server are on same port
 const URL = 'https://3000-f033f8bb-8651-406f-b4f1-cb40f27652e6.ws-us1.gitpod.io/posts'
 
+function getRandomInt(max: number) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 interface PostData {
     id?: number;
     user?: string;
@@ -31,7 +35,7 @@ class PostForm extends React.Component<{}, PostFormState> {
         this.state = {
             privateKey: '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3',
             data: {
-                id: 0,
+                id: getRandomInt(1000000),
                 user: 'bob',
                 reply_to: 0,
                 content: 'This is a test'
@@ -62,7 +66,6 @@ class PostForm extends React.Component<{}, PostFormState> {
                     blocksBehind: 3,
                     expireSeconds: 30,
                 });
-            console.log(result);
             this.setState({ error: '' });
         } catch (e) {
             if (e.json)
@@ -89,7 +92,7 @@ class PostForm extends React.Component<{}, PostFormState> {
                         <td><input
                             style={{ width: 500 }}
                             value={this.state.data.user}
-                            onChange={e => this.setData({ user: e.target.value })}
+                            onChange={e => this.setData({ id: getRandomInt(1000000), user: e.target.value })}
                         /></td>
                     </tr>
                     <tr>
@@ -97,7 +100,7 @@ class PostForm extends React.Component<{}, PostFormState> {
                         <td><input
                             style={{ width: 500 }}
                             value={this.state.data.reply_to}
-                            onChange={e => this.setData({ reply_to: +e.target.value })}
+                            onChange={e => this.setData({ id: getRandomInt(1000000), reply_to: +e.target.value })}
                         /></td>
                     </tr>
                     <tr>
@@ -105,7 +108,7 @@ class PostForm extends React.Component<{}, PostFormState> {
                         <td><input
                             style={{ width: 500 }}
                             value={this.state.data.content}
-                            onChange={e => this.setData({ content: e.target.value })}
+                            onChange={e => this.setData({ id: getRandomInt(1000000), content: e.target.value })}
                         /></td>
                     </tr>
                 </tbody>
@@ -132,11 +135,6 @@ class Messages extends React.Component<{}, { content: string }> {
     componentDidMount() {
         this.interval = window.setInterval(async () => {
             try {
-                /*
-                const rows = await rpc.get_table_rows({
-                    json: true, code: 'talk', scope: '', table: 'message', limit: 1000,
-                });
-                */
                 const res = await fetch(URL)
                 const rows = await res.json()
                 let content =
